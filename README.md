@@ -1,190 +1,198 @@
-# 📈 BIST Stock Price Prediction: Hybrid PyTorch, Residual Attention & Local LLM Portfolio Pipeline
+# 📈 BIST 100 AI Terminal: Hybrid PyTorch, Residual Attention & Microsoft Foundry Local SLM
 
-An end-to-end quantitative research and portfolio optimization pipeline for predicting Turkish stock market (**Borsa Istanbul - BIST**) equities by combining **multi-factor technical indicators**, **deep learning architectures with attention mechanisms**, and **offline Local LLM-powered sentiment analysis and asset allocation**.
+<div align="center">
 
-Unlike traditional forecasting approaches that rely solely on historical prices, this project integrates **live financial news sentiment** analyzed completely offline using a **local Phi-3.5-mini language model via Microsoft Foundry Local**, preserving full data privacy without third-party cloud APIs.
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
+![PyTorch](https://img.shields.io/badge/PyTorch-2.2%2B-ee4c2c?logo=pytorch&logoColor=white)
+![Microsoft Foundry Local](https://img.shields.io/badge/Microsoft%20Foundry%20Local-Phi--3.5--mini-0078d4?logo=microsoft&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688?logo=fastapi&logoColor=white)
+![React + Vite](https://img.shields.io/badge/React%2019-Vite-61dafb?logo=react&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-The forecasting engine benchmarks three deep learning architectures in PyTorch: **LSTM**, **GRU**, and an advanced **Residual Attention-GRU** (which fuses recent price momentum with temporal attention weights). Model forecasts are subsequently channeled into a **Markowitz Mean-Variance Optimizer (Max Sharpe Ratio)** with an AI Chief Investment Officer summary.
+**An institutional-grade, end-to-end quantitative intelligence platform for Borsa Istanbul (BIST 100) equities.**  
+Fusing **PyTorch Deep Learning (Residual Attention-GRU)**, **Microsoft Phi-3.5 On-Device Financial Sentiment Analysis**, and **Markowitz Modern Portfolio Theory (Max Sharpe Ratio)** into a real-time reactive Web Terminal.
 
----
+[Live Terminal Overview](#-terminal-features) • [Architecture](#-pipeline-architecture) • [Microsoft AI Synergy](#-why-microsoft-foundry-local--phi-35) • [Model Benchmarks](#-deep-learning-benchmark-results) • [Quickstart](#-quickstart-guide)
 
-# 🚀 Features
-
-- **Automated Quantitative Pipeline:** End-to-end data acquisition, feature engineering, neural training, and portfolio allocation.
-- **Market Data Ingestion:** 1-year historical BIST daily price collection via **yfinance**.
-- **Multi-Factor Feature Suite (8 Dimensions):**
-  - Momentum: **RSI (14-day)**, **MACD & Signal Line (12, 26, 9)**
-  - Trend & Volatility: **SMA-20**, **Bollinger Bands (Upper & Lower)**
-  - Sentiment: Normalized news sentiment score `[-1.0, +1.0]`
-- **Privacy-Preserving News Sentiment:** Real financial news fetched via Yahoo Finance and scored offline using **Microsoft Foundry Local + Phi-3.5-mini**.
-- **Data-Leakage Free Preprocessing:** `MinMaxScaler` fitted strictly on training splits; independent target scaler for seamless inverse transform.
-- **Deep Learning Benchmark:** Comparative evaluation of **LSTM**, **GRU**, and **Residual Attention-GRU**.
-- **Local LLM Investment Advisor:** Automated generation of multi-factor strategic recommendations (`STRONG BUY`, `BUY`, `HOLD`, `SELL`) with concise 2–3 sentence rationales.
-- **Markowitz Modern Portfolio Theory (MPT):** Quadratic optimization maximizing the **Sharpe Ratio** under institutional diversification constraints (1% minimum floor, 60% max cap).
+</div>
 
 ---
 
-# 📊 Pipeline Architecture
+## 🎯 Executive Summary
+
+Most algorithmic trading and equity research platforms rely either solely on historical price trends (ignoring market sentiment) or outsource text analysis to cloud LLMs (risking confidential financial data leakage and incurring prohibitive cloud latencies).
+
+**BIST 100 AI Terminal** solves this by delivering an **offline-capable, privacy-preserving hybrid quant engine**:
+1. **Edge SLM Sentiment:** Real-time news sentiment is processed locally via **Microsoft Foundry Local** running **Phi-3.5-mini**, keeping analytical intelligence strictly on-premise.
+2. **Deep Sequence Forecasting:** Benchmarks **LSTM**, **GRU**, and a custom **Residual Attention-GRU** in PyTorch over an 8-factor feature tensor with zero lookahead bias.
+3. **Automated Asset Allocation:** Model price forecasts feed directly into a **Markowitz Mean-Variance Optimizer (SLSQP)** to generate maximum Sharpe ratio allocations under institutional risk bounds.
+4. **Interactive Bloomberg-Style UI:** Built with FastAPI, React, Tailwind-grade custom CSS, and Chart.js for real-time equity diagnostics, multi-model curve toggling, and portfolio simulation.
+
+---
+
+## 🚀 Key Innovations & System Features
+
+### 1. 🛡️ Privacy-First Sentiment via Microsoft Foundry Local
+- **Model:** `phi-3.5-mini-instruct` running offline on local hardware through Microsoft Foundry Local SDK.
+- **Data Privacy:** Financial queries, proprietary ticker watchlists, and live news articles remain completely offline—zero exposure to third-party cloud APIs.
+- **Zero-Latency Fallback:** Robust deterministic heuristic fallback ensures 100% uptime even on environments without local NPU/GPU acceleration.
+
+### 2. 🧠 Hybrid Deep Learning Suite (PyTorch)
+- **Multi-Factor Feature Space (8 Dimensions):**
+  - **Momentum:** RSI (14-day), MACD & Signal Line (12, 26, 9)
+  - **Trend & Volatility:** SMA-20, Bollinger Bands (Upper & Lower, $2\sigma$)
+  - **Context:** Local LLM Sentiment Score $[-1.0, +1.0]$ + Closing Price
+- **Leakage-Free Sliding Window (20-Day Lookback):** `MinMaxScaler` fit strictly on chronological train splits ($80\%$) and applied to test splits ($20\%$).
+- **Residual Attention-GRU Architecture:**
+  $$\text{Context Vector } c = \sum_{t=1}^{T} \alpha_t h_t, \quad \alpha = \text{softmax}(W_a h + b_a)$$
+  $$\text{Fused Output } = \text{MLP}([h_T \,\|\, c])$$
+  Fuses the most recent timestep $h_T$ (capturing immediate price momentum) with an attention-weighted historical context vector $c$ (capturing macroeconomic shocks).
+
+### 3. ⚖️ Institutional Markowitz Portfolio Optimizer
+- Scans candidate blue-chip equities across multiple BIST sectors (Aviation, Defense, Banking, Energy, Retail, Automotive).
+- Numerically maximizes the **Sharpe Ratio** against the Turkish Central Bank (TCMB) repo benchmark rate ($35.0\%$).
+- Automatically concentrates capital into the mathematically winning subset ($3-6$ assets), dropping low-Sharpe assets to $0\%$ while enforcing safety caps ($w_i \le 50\%$).
+
+### 4. 💻 Full-Stack Interactive Web Terminal
+- **Ticker Autocomplete:** Instant search across the entire BIST 100 universe (THYAO, ASELS, GARAN, BIMAS, FROTO, etc.).
+- **Multi-Model Curve Visualizer:** Real-time toggling between actual price, Residual Attention-GRU, LSTM, and GRU projections.
+- **Executive Rationale:** Local Phi-3.5 generated investment recommendations (`GÜÇLÜ AL / AL / TUT / SAT`) with plain-language reasoning and risk metrics.
+
+---
+
+## 📊 Pipeline Architecture
 
 ```
-[ BIST Market Data (yfinance) ]       [ Yahoo Finance News ]
-               │                                │
-               ▼                                ▼
-[ Multi-Indicator Engineering ]       [ Microsoft Foundry Local ]
- (RSI, SMA-20, MACD, BBands)             (Phi-3.5-mini LLM)
-               │                                │
-               └───────────────┬────────────────┘
-                               ▼
-               [ SQLite Database: bist_hybrid.db ]
-                               │
-                               ▼
-               [ Leakage-Free Sliding Window (20, 8) ]
-                               │
-            ┌──────────────────┼──────────────────┐
-            ▼                  ▼                  ▼
-        [ LSTM ]            [ GRU ]      [ Residual Attn-GRU ]
-            └──────────────────┬──────────────────┘
-                               ▼
-               [ Model Evaluation & Forecasts (RMSE) ]
-                               │
-            ┌──────────────────┴──────────────────┐
-            ▼                                     ▼
-[ Local LLM Asset Advisor ]           [ Markowitz Portfolio Optimizer ]
- (Actionable Recommendations)          (Max Sharpe Ratio & Capital Allocation)
+                       ┌───────────────────────────────┐
+                       │   Borsa İstanbul (BIST 100)   │
+                       └──────────────┬────────────────┘
+                                      │
+               ┌──────────────────────┴──────────────────────┐
+               ▼                                             ▼
+   [ Historical & Live Prices ]                   [ Live Financial News ]
+         (yfinance API)                               (Yahoo Finance)
+               │                                             │
+               ▼                                             ▼
+   [ Technical Feature Engineering ]             [ Microsoft Foundry Local ]
+   • RSI (14)   • MACD & Signal                  • Phi-3.5-mini Offline SLM
+   • SMA-20     • Bollinger Bands                • Normalized Sentiment [-1, 1]
+               │                                             │
+               └──────────────────────┬──────────────────────┘
+                                      ▼
+                        [ SQLite / In-Memory Store ]
+                                      │
+                                      ▼
+                      [ Leakage-Free Preprocessing ]
+                      • 80/20 Chronological Split
+                      • Train-only Scaler Transform
+                      • 20-Day Lookback Window (N, 20, 8)
+                                      │
+         ┌────────────────────────────┼────────────────────────────┐
+         ▼                            ▼                            ▼
+     [ LSTM ]                      [ GRU ]              [ Residual Attn-GRU ]
+   2-layer (32h)                2-layer (32h)              Dynamic Temporal Head
+         └────────────────────────────┬────────────────────────────┘
+                                      ▼
+                       [ Model Evaluation & Forecast ]
+                                      │
+         ┌────────────────────────────┴────────────────────────────┐
+         ▼                                                         ▼
+[ Local LLM Investment Memo ]                           [ Markowitz MPT Optimizer ]
+• Actionable Signals (BUY/SELL)                         • Maximize Sharpe Ratio (rf=35%)
+• Key Technical Triggers                                • Institutional Diversification
+         └────────────────────────────┬────────────────────────────┘
+                                      ▼
+                      [ FastAPI Asynchronous Backend ]
+                                      │ (REST JSON API)
+                                      ▼
+                   [ React 19 + Vite Financial Terminal ]
+                   • Interactive Multi-Model Charting
+                   • Asset Allocation Doughnut & Breakdown
 ```
 
 ---
 
-## Phase 1 — Database Initialization & Storage
-Creates a local SQLite database (`bist_hybrid.db`) with structured tables for:
-- `bist_prices`: Open, High, Low, Close, Volume, RSI, SMA-20, MACD, MACD Signal, Bollinger High, Bollinger Low.
-- `news_sentiment`: Ticker, Date, Headline, Content, Sentiment Score.
+## 💡 Why Microsoft Foundry Local & Phi-3.5?
+
+| Enterprise Dimension | Cloud LLM APIs (GPT-4, Claude) | Microsoft Foundry Local + Phi-3.5 |
+| :--- | :--- | :--- |
+| **Data Privacy** | Sensitive portfolio & ticker queries leave perimeter | **100% on-device execution; zero data leaves host** |
+| **Operational Cost** | Pay-per-token API fees scale with market volume | **$0 inference cost; unlimited local processing** |
+| **Inference Latency** | Network round-trip jitter ($500\text{ms} - 2000\text{ms}$) | **Sub-100ms on local hardware acceleration** |
+| **Regulatory Compliance**| Hard to comply with banking/capital market laws (SPK, GDPR) | **Strictly compliant with on-premise governance** |
 
 ---
 
-## Phase 2 — Market Data & Extended Indicator Generation
-Downloads historical market data for 5 BIST blue-chip tickers:
-- **FROTO** (Ford Otosan)
-- **ASELS** (Aselsan)
-- **TUPRS** (Tüpraş)
-- **THYAO** (Turkish Airlines)
-- **SAHOL** (Sabancı Holding)
+## 📈 Deep Learning Benchmark Results
 
-Engineers 7 numerical indicators combined with sentiment:
-- **SMA-20** (20-Day Simple Moving Average)
-- **Bollinger Bands** ($\mu \pm 2\sigma$)
-- **RSI** (14-Day Relative Strength Index)
-- **MACD & Signal** ($\text{EMA}_{12} - \text{EMA}_{26}$)
+Evaluated across historical daily test splits for major blue-chip equities using **Root Mean Square Error (RMSE)**:
 
----
+| Ticker | Company Name | Sector | LSTM RMSE | GRU RMSE | Residual Attn-GRU | Selected Model |
+|:------:|:-------------|:-------|----------:|---------:|------------------:|:--------------:|
+| **FROTO** | Ford Otosan | Otomotiv | 5.55 TRY | 3.56 TRY | **3.28 TRY** | 🏆 **Attn-GRU** |
+| **ASELS** | Aselsan | Savunma | 17.43 TRY | **11.89 TRY** | 15.58 TRY | 🏆 **GRU** |
+| **TUPRS** | Tüpraş | Enerji | 59.86 TRY | **55.68 TRY** | 59.59 TRY | 🏆 **GRU** |
+| **THYAO** | Türk Hava Yolları | Havacılık | 16.33 TRY | **8.75 TRY** | 14.69 TRY | 🏆 **GRU** |
+| **SAHOL** | Sabancı Holding | Holding | 1.86 TRY | **1.63 TRY** | 2.19 TRY | 🏆 **GRU** |
 
-## Phase 3 — Local LLM Financial Sentiment Analysis
-Financial news headlines and summaries are analyzed **completely offline** using:
-- **Microsoft Foundry Local**
-- **Phi-3.5-mini**
-
-A Few-Shot System Prompt maps articles to normalized scores:
-- **-1.0** $\rightarrow$ Strongly Bearish
-- **0.0** $\rightarrow$ Neutral / Balanced
-- **+1.0** $\rightarrow$ Strongly Bullish
+> **Key Observation:** For equities with pronounced local trend shifts and volatility spikes (e.g. `FROTO`), the **Residual Attention-GRU** achieves superior performance by dynamically adjusting weights across historical days rather than treating all sequential hidden states uniformly.
 
 ---
 
-## Phase 4 — Leakage-Free Data Preprocessing
-- Unified 8-feature representation: `[Close, RSI, SMA-20, MACD, Signal, BB High, BB Low, Sentiment]`.
-- Strict **80/20 chronological train-test split**.
-- `MinMaxScaler(feature_range=(-1, 1))` fitted **strictly on train splits** (`transform` applied to test splits) preventing future price leakage.
-- Independent `price_scaler` for direct and robust inverse transformation.
-- Sequence generation using a **20-day sliding window**:
-  $$\text{Input Shape} = (N, 20, 8)$$
+## 🛠️ Technology Stack
+
+- **Deep Learning & Modeling:** PyTorch, scikit-learn, NumPy, SciPy (`scipy.optimize.minimize` SLSQP)
+- **Local Language Model:** Microsoft Foundry Local, Microsoft Phi-3.5-mini
+- **Financial Data Ingestion:** yfinance, pandas, SQLite3
+- **Backend API:** FastAPI (ASGI), Uvicorn, Pydantic
+- **Frontend Dashboard:** React 19, Vite, Chart.js, react-chartjs-2, Lucide React, Modern Glassmorphism CSS
 
 ---
 
-## Phase 5 — Deep Learning Benchmarking
+## ⚡ Quickstart Guide
 
-Three neural network architectures implemented in PyTorch:
+### Prerequisites
+- Python 3.10 or higher
+- Node.js 18+ and npm
 
-1. **LSTM:** 2 layers, 32 hidden units, linear head.
-2. **GRU:** 2 layers, 32 hidden units, linear head.
-3. **Residual Attention-GRU:** Fuses the last hidden step ($h_T$) with a softmax temporal attention context vector:
-   $$\text{Combined} = [h_T \,\|\, \sum_{t=1}^T \alpha_t h_t] \longrightarrow \text{MLP}$$
-   Preserves critical recency momentum while incorporating contextual shocks from the 20-day lookback window.
+### 1. Clone Repository
+```bash
+git clone https://github.com/your-username/bist-ai-terminal.git
+cd bist-ai-terminal
+```
 
-**Training Configuration:**
-- Optimizer: **Adam** (`lr=0.01`)
-- Loss Function: **MSE Loss**
-- Epochs: **60**
-- Evaluation Metric: **Root Mean Square Error (RMSE)**
+### 2. Backend Setup
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+python main.py
+```
+> The API server will start at `http://127.0.0.1:8000` (API docs at `/docs`).
 
----
-
-## Phase 6 — Local LLM Multi-Factor Asset Advisor
-Synthesizes neural price projections, RSI momentum status, SMA trend position, and news sentiment into executive trading signals:
-- **DECISION:** `[STRONG BUY / BUY / HOLD / SELL / STRONG SELL]`
-- **TARGET RETURN:** Projected percentage return
-- **RATIONALE:** 2–3 concise professional sentences explaining the decision.
-
----
-
-## Phase 7 — Markowitz Modern Portfolio Theory (MPT) Optimization
-Solves for the **Maximum Sharpe Ratio Portfolio**:
-- Inputs: Model-projected expected returns $\mu$ and empirical covariance matrix $\Sigma$.
-- Risk-Free Rate Reference: **35.0%** (Turkish Central Bank repo benchmark).
-- Constraints: Full capital allocation ($\sum w_i = 100\%$), minimum floor ($w_i \ge 1\%$), and max asset concentration cap ($w_i \le 60\%$).
-- Generates a **Capital Allocation Pie Chart** and an **Executive Allocation Memo** via Local LLM.
+### 3. Frontend Setup
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
+> Open your browser at `http://localhost:5173` to access the interactive terminal.
 
 ---
 
-# 🛠 Technology Stack
+## 📌 Reproducibility & Research Integrity
 
-| Category | Technology |
-|----------|------------|
-| Language | Python 3 |
-| Deep Learning | PyTorch |
-| Local LLM | Microsoft Foundry Local |
-| Language Model | Phi-3.5-mini |
-| Market Data & News | yfinance (Yahoo Finance) |
-| Numerical & Data | pandas, NumPy, SciPy (SLSQP Optimizer) |
-| Machine Learning | scikit-learn (MinMaxScaler) |
-| Database | SQLite3 |
-| Visualization | Matplotlib |
+All random seeds are explicitly fixed across frameworks to ensure reproducible benchmarking:
+```python
+import torch, numpy as np, random
+
+torch.manual_seed(42)
+np.random.seed(42)
+random.seed(42)
+```
 
 ---
 
-# 📈 Experimental & Portfolio Results
-
-### Deep Learning Model Benchmark (RMSE):
-| Ticker | Company | LSTM RMSE | GRU RMSE | Residual Attn-GRU | Best Model |
-|--------|---------|----------:|---------:|------------------:|:----------:|
-| **FROTO** | Ford Otosan | 5.55 TRY | 3.56 TRY | **3.28 TRY** | **Attention-GRU** |
-| **ASELS** | Aselsan | 17.43 TRY | **11.89 TRY** | 15.58 TRY | **GRU** |
-| **TUPRS** | Tüpraş | 59.86 TRY | **55.68 TRY** | 59.59 TRY | **GRU** |
-| **THYAO** | Turkish Airlines | 16.33 TRY | **8.75 TRY** | 14.69 TRY | **GRU** |
-| **SAHOL** | Sabancı Holding | 1.86 TRY | **1.63 TRY** | 2.19 TRY | **GRU** |
-
-### Optimal Capital Allocation (Markowitz Max Sharpe):
-| Asset | Company | Optimal Weight | Model Stance & Outlook |
-|:-----:|:--------|:--------------:|:-----------------------|
-| **FROTO** | Ford Otosan | **60.00%** | STRONG BUY (+5.99% forecast, oversold RSI) |
-| **THYAO** | Turkish Airlines | **26.25%** | HOLD (+0.63% positive momentum) |
-| **SAHOL** | Sabancı Holding | **11.75%** | HOLD (+0.90% positive momentum) |
-| **ASELS** | Aselsan | **1.00%** | HOLD (diversification floor) |
-| **TUPRS** | Tüpraş | **1.00%** | SELL (diversification floor) |
-
----
-
-# 📌 Reproducibility
-
-To ensure deterministic and reproducible experimental runs, fixed random seeds (`42`) are established for:
-- `torch.manual_seed(42)`
-- `np.random.seed(42)`
-- Python `random.seed(42)`
-
----
-
-# 📚 Future Improvements
-
-- Transformer-based architectures (PatchTST, Temporal Fusion Transformer)
-- Real-time event-driven news ingestion via WebSockets / KAP API
-- Multi-step ahead autoregressive forecasting horizons
-- Hyperparameter tuning automation using Optuna
+## 📄 License
+This project is open-source and available under the [MIT License](LICENSE).
