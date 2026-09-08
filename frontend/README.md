@@ -1,16 +1,33 @@
-# React + Vite
+# 💻 BIST 100 AI Terminal — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+The web client for the **BIST 100 AI Terminal**, built with React 19, Vite, and Chart.js.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Live Market Telemetry:** Real-time BIST 100 (XU100) benchmark index status, session tracking, and change rates.
+- **Dynamic Stock Search:** Autocomplete and quick-select chips for major BIST equities (THYAO, ASELS, BIMAS, GARAN, FROTO, etc.).
+- **Multi-Model Chart Visualizer:** Interactive time-series comparing actual prices against:
+  - PyTorch **Residual Attention-GRU**
+  - PyTorch **GRU**
+  - PyTorch **LSTM**
+- **AI Investment Stance:** Displays Microsoft Phi-3.5 offline SLM recommendations (`GÜÇLÜ AL`, `AL`, `TUT`, `SAT`), executive rationale, and confidence scores.
+- **Markowitz Portfolio Optimizer UI:** Interactive asset allocation breakdown with Sharpe ratio analytics.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Framework:** [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Charts:** [Chart.js](https://www.chartjs.org/) & [react-chartjs-2](https://react-chartjs-2.js.org/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **Styling:** Custom responsive Glassmorphism design system
 
-## Expanding the Oxlint configuration
+## ⚡ Development Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+The application will be served at `http://localhost:5173`. Make sure the FastAPI backend is running at `http://127.0.0.1:8000`.
