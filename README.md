@@ -129,11 +129,11 @@ Evaluated across historical daily test splits for major blue-chip equities using
 
 | Ticker | Company Name | Sector | LSTM RMSE | GRU RMSE | Residual Attn-GRU | Selected Model |
 |:------:|:-------------|:-------|----------:|---------:|------------------:|:--------------:|
-| **FROTO** | Ford Otosan | Otomotiv | 5.55 TRY | 3.56 TRY | **3.28 TRY** | 🏆 **Attn-GRU** |
-| **ASELS** | Aselsan | Savunma | 17.43 TRY | **11.89 TRY** | 15.58 TRY | 🏆 **GRU** |
-| **TUPRS** | Tüpraş | Enerji | 59.86 TRY | **55.68 TRY** | 59.59 TRY | 🏆 **GRU** |
-| **THYAO** | Türk Hava Yolları | Havacılık | 16.33 TRY | **8.75 TRY** | 14.69 TRY | 🏆 **GRU** |
-| **SAHOL** | Sabancı Holding | Holding | 1.86 TRY | **1.63 TRY** | 2.19 TRY | 🏆 **GRU** |
+| **FROTO** | Ford Otosan | Automotive | 5.55 TRY | 3.56 TRY | **3.28 TRY** | 🏆 **Attn-GRU** |
+| **ASELS** | Aselsan | Defense | 17.43 TRY | **11.89 TRY** | 15.58 TRY | 🏆 **GRU** |
+| **TUPRS** | Tüpraş | Energy & Refining | 59.86 TRY | **55.68 TRY** | 59.59 TRY | 🏆 **GRU** |
+| **THYAO** | Turkish Airlines | Aviation | 16.33 TRY | **8.75 TRY** | 14.69 TRY | 🏆 **GRU** |
+| **SAHOL** | Sabancı Holding | Conglomerate | 1.86 TRY | **1.63 TRY** | 2.19 TRY | 🏆 **GRU** |
 
 > **Key Observation:** For equities with pronounced local trend shifts and volatility spikes (e.g. `FROTO`), the **Residual Attention-GRU** achieves superior performance by dynamically adjusting weights across historical days rather than treating all sequential hidden states uniformly.
 

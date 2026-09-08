@@ -110,12 +110,13 @@ def find_best_optimal_bist_portfolio() -> Dict[str, Any]:
             item["weight"] = round((item["weight"] / total_sig) * 100, 1)
             item["color"] = colors[idx % len(colors)]
             
-    top_picks = ", ".join([f"{a['ticker']} (%{a['weight']})" for a in significant_allocations])
+    top_picks = ", ".join([f"{a['ticker']} ({a['weight']}%)" for a in significant_allocations])
     
     cio_memo = (
-        f"Yapay zeka algoritması, Borsa İstanbul lokomotif evrenini tarayarak en yüksek risk-ayarlı Sharpe getirisini üreten "
-        f"{len(significant_allocations)} hisseli ideal portföyü seçti: {top_picks}. "
-        f"Bu optimal dağılım, yıllık beklenen %{opt_ret*100:.1f} getiri potansiyeli ve {opt_sharpe:.2f} Sharpe oranıyla sektörler arası riski minimize etmektedir."
+        f"The quantitative algorithm scanned the core BIST 100 universe and identified an optimal {len(significant_allocations)}-asset portfolio "
+        f"maximizing the risk-adjusted Sharpe Ratio: {top_picks}. "
+        f"This strategic allocation projects an expected annualized return of {opt_ret*100:.1f}% with a Sharpe ratio of {opt_sharpe:.2f}, "
+        f"providing superior cross-sector diversification."
     )
     
     return {
@@ -124,6 +125,6 @@ def find_best_optimal_bist_portfolio() -> Dict[str, Any]:
         "sharpe_ratio": round(float(opt_sharpe), 2),
         "asset_count": len(significant_allocations),
         "allocations": significant_allocations,
-        "strategy": f"AI SEÇİMLİ EN OPTİMAL {len(significant_allocations)}'Lİ BIST SEPETİ",
+        "strategy": f"AI-OPTIMIZED TOP {len(significant_allocations)} BIST BASKET",
         "cio_memo": cio_memo
     }

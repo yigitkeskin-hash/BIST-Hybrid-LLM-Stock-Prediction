@@ -19,33 +19,33 @@ def generate_stock_recommendation(
     and detailed rationale in Turkish and English using Microsoft Foundry Local / Phi-3.5 or
     deterministic financial quantitative rules.
     """
-    rsi_status = "Aşırı Alım (Overbought)" if rsi > 70 else "Aşırı Satım (Oversold)" if rsi < 30 else "Dengeli (Neutral)"
-    sma_status = "SMA-20 Üzerinde (Boğa Trendi)" if current_price >= sma_20 else "SMA-20 Altında (Düzeltme Trendi)"
-    sentiment_status = "Pozitif / İyimser" if sentiment > 0.1 else "Negatif / Baskılı" if sentiment < -0.1 else "Nötr"
+    rsi_status = "Overbought" if rsi > 70 else "Oversold" if rsi < 30 else "Neutral"
+    sma_status = "Above SMA-20 (Bullish)" if current_price >= sma_20 else "Below SMA-20 (Corrective)"
+    sentiment_status = "Bullish / Positive" if sentiment > 0.1 else "Bearish / Depressed" if sentiment < -0.1 else "Neutral"
     
     # Quantitative Decision Logic
     if expected_return_pct > 3.0 and rsi < 65 and sentiment >= -0.05:
-        decision = "GÜÇLÜ AL"
+        decision = "STRONG BUY"
         badge = "STRONG BUY"
         color = "#10b981" # emerald
         confidence = 88
     elif expected_return_pct > 0.8 and rsi < 70:
-        decision = "AL"
+        decision = "BUY"
         badge = "BUY"
         color = "#22c55e" # green
         confidence = 74
     elif expected_return_pct < -3.0 or rsi > 75:
-        decision = "SAT"
+        decision = "SELL"
         badge = "SELL"
         color = "#ef4444" # red
         confidence = 80
     elif expected_return_pct < -0.8:
-        decision = "ZAYIF / RİSKLİ"
+        decision = "REDUCE / WEAK"
         badge = "WEAK / REDUCE"
         color = "#f97316" # orange
         confidence = 68
     else:
-        decision = "TUT"
+        decision = "HOLD"
         badge = "HOLD"
         color = "#eab308" # yellow
         confidence = 70
@@ -59,19 +59,19 @@ def generate_stock_recommendation(
             model = manager.catalog.get_model("phi-3.5-mini")
             client = model.get_chat_client()
             
-            prompt = f"""Hisse: {ticker} ({company_name})
-Güncel Fiyat: {current_price:.2f} TL
-Yapay Zeka Hedef Fiyat: {predicted_price:.2f} TL (Beklenen Değişim: %{expected_return_pct:+.2f})
-14 Günlük RSI: {rsi:.1f} ({rsi_status})
-20 Günlük Hareketli Ortalama (SMA-20): {sma_20:.2f} TL ({sma_status})
+            prompt = f"""Equity: {ticker} ({company_name})
+Current Price: {current_price:.2f} TRY
+AI Target Price: {predicted_price:.2f} TRY (Expected Return: {expected_return_pct:+.2f}%)
+14-Day RSI: {rsi:.1f} ({rsi_status})
+20-Day Simple Moving Average (SMA-20): {sma_20:.2f} TRY ({sma_status})
 MACD: {macd:.2f}
-Piyasa Haber Duyarlılık Skoru: {sentiment:+.2f} ({sentiment_status})
-En Başarılı Model: {best_model}
+Market Sentiment Score: {sentiment:+.2f} ({sentiment_status})
+Selected Best Neural Model: {best_model}
 
-Lütfen bir Baş Yatırım Uzmanı (CIO) olarak bu hissenin alınıp alınmaması gerektiğine dair 2-3 cümlelik çok net, profesyonel bir Türkçe yatırım gerekçesi yaz. Kararın ({decision}) ile tam uyumlu olsun."""
+As an institutional Chief Investment Officer (CIO), provide a concise 2-3 sentence strategic rationale in English regarding this investment outlook. Ensure strict alignment with the stance: {decision}."""
             
             resp = client.complete_chat(messages=[
-                {"role": "system", "content": "Sen Borsa İstanbul konusunda uzman, profesyonel bir Kantitatif Yatırım Danışmanısın. Gereksiz uyarı yapmadan doğrudan stratejik ve teknik analize odaklan."},
+                {"role": "system", "content": "You are a senior Quantitative Portfolio Strategist specializing in equity markets. Deliver concise, professional executive investment rationales without disclaimers."},
                 {"role": "user", "content": prompt}
             ])
             llm_rationale = resp.choices[0].message.content.strip()
@@ -80,21 +80,22 @@ Lütfen bir Baş Yatırım Uzmanı (CIO) olarak bu hissenin alınıp alınmamas�
 
     # High-standard deterministic fallback rationale if LLM offline
     if not llm_rationale:
-        if "AL" in decision:
+        if "BUY" in decision:
             llm_rationale = (
-                f"{best_model} yapay zeka mimarisi, hisse için %{expected_return_pct:+.2f} getiri potansiyeli öngörüyor. "
-                f"RSI göstergesinin {rsi:.1f} seviyesinde olması aşırı alım riski taşımadan sağlıklı bir momentum işaret ederken, "
-                f"fiyatın {sma_status.lower()} seyretmesi ve haber duyarlılığının {sentiment:+.2f} olması pozitif pozisyonlanmayı destekliyor."
+                f"The {best_model} neural architecture projects a {expected_return_pct:+.2f}% expected upside. "
+                f"With the 14-day RSI at {rsi:.1f} reflecting sustainable momentum without severe overbought risks, "
+                f"and price trading {sma_status.lower()} backed by a {sentiment:+.2f} sentiment index, tactical accumulation is supported."
             )
-        elif "SAT" in decision or "ZAYIF" in decision:
+        elif "SELL" in decision or "REDUCE" in decision:
             llm_rationale = (
-                f"{best_model} projeksiyonu %{expected_return_pct:+.2f} yönlü aşağı yönlü baskı tahmin etmektedir. "
-                f"RSI değerinin {rsi:.1f} seviyesinde bulunması ve teknik görünümün {sma_status.lower()} kalması, kısa vadede kâr realizasyonu veya temkinli kalmayı gerektirmektedir."
+                f"The {best_model} model projects a {expected_return_pct:+.2f}% downside risk. "
+                f"Given an RSI reading of {rsi:.1f} and technical indicators remaining {sma_status.lower()}, "
+                f"short-term capital preservation and profit realization are advised."
             )
         else:
             llm_rationale = (
-                f"Hisse mevcut {current_price:.2f} TL seviyesinde dengeli bir konsolidasyon sürecindedir (%{expected_return_pct:+.2f} beklenen değişim). "
-                f"RSI'ın {rsi:.1f} nötr bölgesinde kalması sebebiyle yeni bir kırılım görülene kadar mevcut pozisyonların korunması (TUT) tavsiye edilmektedir."
+                f"The asset is undergoing balanced consolidation near current levels of {current_price:.2f} TRY ({expected_return_pct:+.2f}% projected change). "
+                f"With RSI holding at {rsi:.1f} in neutral territory, maintaining existing allocations (HOLD) is warranted until directional confirmation emerges."
             )
 
     return {

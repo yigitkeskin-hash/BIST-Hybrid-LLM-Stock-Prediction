@@ -32,12 +32,12 @@ def health_check():
 
 @app.get("/api/market-status")
 def get_market_status():
-    """Returns live BIST 100 Index (XU100) and seans status."""
+    """Returns live BIST 100 Index (XU100) and session status."""
     index_data = fetch_bist100_index()
     return {
         "index": index_data,
-        "market": "Borsa İstanbul (BIST)",
-        "status": "AÇIK",
+        "market": "Borsa Istanbul (BIST)",
+        "status": "OPEN",
         "currency": "TRY"
     }
 
@@ -118,7 +118,7 @@ def analyze_bist_stock(ticker: str = Query(..., description="BIST 100 Ticker sym
             "news": news_items
         }
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"'{clean_ticker}' analiz edilirken hata: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Error analyzing '{clean_ticker}': {str(e)}")
 
 @app.get("/api/portfolio/optimal")
 def get_auto_optimal_portfolio():

@@ -149,21 +149,21 @@ def benchmark_models_for_dataframe(df: pd.DataFrame, sentiment_score: float = 0.
     # Day 1: ~40% progress, Day 2: ~75% progress, Day 3: 100% target
     days_forecast = [
         {
-            "day": "+1 Gün (Yarın)",
+            "day": "+1 Day (Tomorrow)",
             "Attention-GRU": round(current_price * (1 + ret_attn * 0.40), 2),
             "LSTM": round(current_price * (1 + ret_lstm * 0.40), 2),
             "GRU": round(current_price * (1 + ret_gru * 0.40), 2),
             "change_pct": round(ret_attn * 0.40 * 100, 2)
         },
         {
-            "day": "+2 Gün",
+            "day": "+2 Days",
             "Attention-GRU": round(current_price * (1 + ret_attn * 0.75), 2),
             "LSTM": round(current_price * (1 + ret_lstm * 0.75), 2),
             "GRU": round(current_price * (1 + ret_gru * 0.75), 2),
             "change_pct": round(ret_attn * 0.75 * 100, 2)
         },
         {
-            "day": "+3 Gün (Hedef)",
+            "day": "+3 Days (Target)",
             "Attention-GRU": round(current_price * (1 + ret_attn), 2),
             "LSTM": round(current_price * (1 + ret_lstm), 2),
             "GRU": round(current_price * (1 + ret_gru), 2),

@@ -99,7 +99,7 @@ export default function App() {
       setStockData(res.data);
       setSearchQuery(target.toUpperCase());
     } catch (err) {
-      setStockError(err.response?.data?.detail || "Hisse verisi çekilemedi.");
+      setStockError(err.response?.data?.detail || "Failed to fetch stock telemetry.");
       setStockData(null);
     } finally {
       setLoadingStock(false);
@@ -150,7 +150,7 @@ export default function App() {
     const lastPrice = pastPrices[pastPrices.length - 1];
 
     // Future labels: exactly the 3 days ahead
-    const allLabels = [...pastDates, '+1G (Yarın)', '+2G', '+3G (Hedef)'];
+    const allLabels = [...pastDates, '+1D (Tomorrow)', '+2D', '+3D (Target)'];
 
     // 1. Actual Historical Price Curve (Ends at today)
     const actualSeries = [...pastPrices, null, null, null];
@@ -181,7 +181,7 @@ export default function App() {
 
     const datasets = [
       {
-        label: `${stockData.ticker} Gerçek Fiyat Geçmişi`,
+        label: `${stockData.ticker} Historical Close Price`,
         data: actualSeries,
         borderColor: '#0f172a',
         backgroundColor: 'rgba(15, 23, 42, 0.03)',
@@ -195,7 +195,7 @@ export default function App() {
     // Historical Backtest Models (Showing past GRU / Attention-GRU trajectory)
     if (showBacktest && showGRU) {
       datasets.push({
-        label: 'GRU Geçmiş Tahmin Eğrisi (Backtest)',
+        label: 'GRU Historical Backtest Trajectory',
         data: makeHistoricalSeries('GRU'),
         borderColor: 'rgba(217, 119, 6, 0.75)',
         borderDash: [3, 2],
@@ -207,7 +207,7 @@ export default function App() {
 
     if (showBacktest && showAttnGRU) {
       datasets.push({
-        label: 'Attention-GRU Geçmiş Tahmin Eğrisi',
+        label: 'Attention-GRU Historical Backtest',
         data: makeHistoricalSeries('Attention-GRU'),
         borderColor: 'rgba(5, 150, 105, 0.75)',
         borderDash: [3, 2],
@@ -217,10 +217,10 @@ export default function App() {
       });
     }
 
-    // Future Projections (+1G, +2G, +3G)
+    // Future Projections (+1D, +2D, +3D)
     if (showAttnGRU) {
       datasets.push({
-        label: 'Attention-GRU Gelecek Projeksiyonu (Öneri)',
+        label: 'Attention-GRU Forecast (Recommended)',
         data: makeFutureSeries('Attention-GRU'),
         borderColor: '#059669',
         borderDash: [5, 4],
@@ -233,7 +233,7 @@ export default function App() {
 
     if (showLSTM) {
       datasets.push({
-        label: 'LSTM Gelecek Projeksiyonu',
+        label: 'LSTM Forecast',
         data: makeFutureSeries('LSTM'),
         borderColor: '#0284c7',
         borderDash: [3, 3],
@@ -245,7 +245,7 @@ export default function App() {
 
     if (showGRU) {
       datasets.push({
-        label: 'GRU Gelecek Projeksiyonu',
+        label: 'GRU Forecast',
         data: makeFutureSeries('GRU'),
         borderColor: '#d97706',
         borderDash: [2, 2],
@@ -283,7 +283,7 @@ export default function App() {
           </div>
           <div>
             <h1 className="terminal-title">BIST 100 AI TERMINAL</h1>
-            <p className="terminal-subtitle">Canlı BIST 100 Hisse Analizi & Otomatik AI Portföy Motoru</p>
+            <p className="terminal-subtitle">Real-Time BIST 100 Quantitative Intelligence & Microsoft Local SLM Engine</p>
           </div>
         </div>
 
@@ -291,17 +291,17 @@ export default function App() {
           {marketStatus && (
             <div className="bist-index-badge">
               <span className="bist-label">BIST 100 (XU100)</span>
-              <span className="bist-val">{marketStatus.index.price.toLocaleString('tr-TR')} ₺</span>
+              <span className="bist-val">{marketStatus.index.price.toLocaleString('en-US')} ₺</span>
               <span className={`change-badge ${marketStatus.index.is_positive ? 'positive' : 'negative'}`}>
                 {marketStatus.index.is_positive ? <TrendingUp size={11} /> : <TrendingDown size={11} />}
-                %{Math.abs(marketStatus.index.change_pct)}
+                {Math.abs(marketStatus.index.change_pct)}%
               </span>
             </div>
           )}
 
           <div className="market-session-tag">
             <span className="pulsing-dot"></span>
-            SEANS: AÇIK
+            SESSION: OPEN
           </div>
 
           <button
@@ -311,7 +311,7 @@ export default function App() {
               if (activeTab === 'portfolio') fetchOptimalPortfolio();
             }}
             className="icon-btn"
-            title="Piyasayı Yenile"
+            title="Refresh Market"
           >
             <RefreshCw size={14} />
           </button>
@@ -324,13 +324,13 @@ export default function App() {
           className={`tab-btn ${activeTab === 'analyze' ? 'active' : ''}`}
           onClick={() => setActiveTab('analyze')}
         >
-          <Search size={15} /> BIST 100 Hisse Sor & Gelecek 3 Gün Tahmini
+          <Search size={15} /> Equity Diagnostics & 3-Day Forecast
         </button>
         <button
           className={`tab-btn ${activeTab === 'portfolio' ? 'active' : ''}`}
           onClick={() => setActiveTab('portfolio')}
         >
-          <Sparkles size={15} /> BIST 100 En Optimal Portföy (Yapay Zeka Önerisi)
+          <Sparkles size={15} /> Optimal Markowitz Portfolio (Max Sharpe)
         </button>
       </div>
 
@@ -340,7 +340,7 @@ export default function App() {
           <div className="glass-panel">
             <h2 className="panel-title">
               <Search size={16} />
-              BIST 100 Hisse Arama & Çoklu Model Tahmin Raporu
+              BIST 100 Stock Analysis & Multi-Model Forecast
             </h2>
 
             {/* Search Input with Autocomplete */}
@@ -350,7 +350,7 @@ export default function App() {
                 <input
                   type="text"
                   className="search-input"
-                  placeholder="BIST 100 hisse kodu veya şirket adı yazın (örn: BIMAS, THYAO, GARAN, ASELS, ASTOR)..."
+                  placeholder="Enter BIST ticker or company name (e.g. BIMAS, THYAO, GARAN, ASELS, ASTOR)..."
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
@@ -385,13 +385,13 @@ export default function App() {
                 disabled={loadingStock}
               >
                 {loadingStock ? <RefreshCw className="animate-spin" size={14} /> : <Zap size={14} />}
-                {loadingStock ? 'Yapay Zeka İnceliyor...' : 'Fiyat & Tahmin Sor'}
+                {loadingStock ? 'Analyzing with AI...' : 'Analyze Equity'}
               </button>
             </div>
 
             {/* Popular Chips */}
             <div className="popular-chips">
-              <span className="chip-label">Hızlı Seçim:</span>
+              <span className="chip-label">Quick Select:</span>
               {popularChips.map((chip) => (
                 <button
                   key={chip}
@@ -415,7 +415,7 @@ export default function App() {
               <div>
                 <div className="ai-decision-card">
                   <div className="decision-badge-col">
-                    <div style={{ fontSize: 11, color: '#64748b', fontWeight: 700, letterSpacing: 0.5 }}>YAPAY ZEKA TAVSİYESİ</div>
+                    <div style={{ fontSize: 11, color: '#64748b', fontWeight: 700, letterSpacing: 0.5 }}>AI STRATEGIC STANCE</div>
                     <div
                       className="decision-glow-title"
                       style={{ color: stockData.recommendation.color }}
@@ -426,8 +426,8 @@ export default function App() {
 
                     <div className="confidence-bar-wrap">
                       <div className="conf-label">
-                        <span>Model Güven Oranı</span>
-                        <span>%{stockData.recommendation.confidence}</span>
+                        <span>Model Confidence</span>
+                        <span>{stockData.recommendation.confidence}%</span>
                       </div>
                       <div className="conf-track">
                         <div
@@ -449,48 +449,48 @@ export default function App() {
                             {stockData.ticker} · <span style={{ color: '#64748b', fontWeight: 500 }}>{stockData.company_name}</span>
                           </h3>
                           <span style={{ fontSize: 12, color: '#64748b' }}>
-                            Sektör: <b style={{ color: '#0f172a' }}>{stockData.sector}</b> | Kazanan: <b style={{ color: '#0f172a' }}>{stockData.recommendation.best_model}</b>
+                            Sector: <b style={{ color: '#0f172a' }}>{stockData.sector}</b> | Selected Architecture: <b style={{ color: '#0f172a' }}>{stockData.recommendation.best_model}</b>
                           </span>
                         </div>
                         <div style={{ textAlign: 'right' }}>
                           <span style={{ fontSize: 26, fontWeight: 800, color: '#0f172a' }}>{stockData.current_price} ₺</span>
                           <div style={{ fontSize: 11.5, color: stockData.daily_change_pct >= 0 ? '#059669' : '#dc2626', fontWeight: 700 }}>
-                            {stockData.daily_change_pct >= 0 ? '+' : ''}%{stockData.daily_change_pct} Günlük
+                            {stockData.daily_change_pct >= 0 ? '+' : ''}{stockData.daily_change_pct}% Daily
                           </div>
                         </div>
                       </div>
 
                       <div className="target-numbers-row">
                         <div className="target-pill" style={{ background: '#f0fdf4', borderColor: '#bbf7d0' }}>
-                          <div className="target-pill-title" style={{ color: '#166534', fontWeight: 700 }}>Yıl Sonu Hedef Fiyat (12-Ay)</div>
+                          <div className="target-pill-title" style={{ color: '#166534', fontWeight: 700 }}>Analyst Target (12-Mo)</div>
                           <div className="target-pill-val" style={{ color: '#15803d' }}>
                             {stockData.year_end_target || stockData.recommendation.year_end_target || (stockData.current_price * 1.35).toFixed(2)} ₺
                           </div>
                           <div style={{ fontSize: 11, color: '#166534', marginTop: 3, fontWeight: 600 }}>
-                            %{stockData.year_end_return_pct >= 0 ? '+' : ''}{stockData.year_end_return_pct || 35.0} Potansiyel
+                            {stockData.year_end_return_pct >= 0 ? '+' : ''}{stockData.year_end_return_pct || 35.0}% Potential
                           </div>
                         </div>
                         <div className="target-pill">
-                          <div className="target-pill-title">3 Günlük AI Projeksiyonu</div>
+                          <div className="target-pill-title">3-Day AI Target Projection</div>
                           <div className="target-pill-val" style={{ color: '#0284c7' }}>
                             {stockData.recommendation.predicted_price} ₺
                           </div>
                           <div style={{ fontSize: 11, color: stockData.recommendation.expected_return_pct >= 0 ? '#059669' : '#dc2626', marginTop: 3, fontWeight: 600 }}>
-                            %{stockData.recommendation.expected_return_pct > 0 ? '+' : ''}{stockData.recommendation.expected_return_pct} Kısa Vade
+                            {stockData.recommendation.expected_return_pct > 0 ? '+' : ''}{stockData.recommendation.expected_return_pct}% Short-Term
                           </div>
                         </div>
                         <div className="target-pill">
                           <div className="target-pill-title">RSI (14) Momentum</div>
                           <div className="target-pill-val">{stockData.recommendation.indicators.rsi}</div>
                           <div style={{ fontSize: 11, color: '#64748b', marginTop: 3 }}>
-                            {stockData.recommendation.indicators.rsi_status?.split(' ')[0] || 'Dengeli'}
+                            {stockData.recommendation.indicators.rsi_status || 'Neutral'}
                           </div>
                         </div>
                         <div className="target-pill">
-                          <div className="target-pill-title">SMA-20 Seviyesi</div>
+                          <div className="target-pill-title">SMA-20 Benchmark</div>
                           <div className="target-pill-val">{stockData.recommendation.indicators.sma_20} ₺</div>
                           <div style={{ fontSize: 11, color: stockData.current_price >= stockData.recommendation.indicators.sma_20 ? '#059669' : '#dc2626', marginTop: 3 }}>
-                            {stockData.current_price >= stockData.recommendation.indicators.sma_20 ? 'Trend Üstü' : 'Trend Altı'}
+                            {stockData.current_price >= stockData.recommendation.indicators.sma_20 ? 'Above Trend' : 'Below Trend'}
                           </div>
                         </div>
                       </div>
@@ -498,7 +498,7 @@ export default function App() {
 
                     <div className="ai-rationale-box">
                       <div style={{ fontWeight: 700, marginBottom: 4, color: '#0f172a', fontSize: 12 }}>
-                        CIO ANALİZ RAPORU & ALIM/SATIM GEREKÇESİ:
+                        CIO STRATEGIC MEMO & INVESTMENT RATIONALE:
                       </div>
                       <p>{stockData.recommendation.rationale}</p>
                     </div>
@@ -510,7 +510,7 @@ export default function App() {
                   <div style={{ marginTop: 20, marginBottom: 24 }}>
                     <div style={{ fontSize: 13.5, fontWeight: 700, marginBottom: 12, color: '#0f172a', display: 'flex', alignItems: 'center', gap: 6 }}>
                       <Calendar size={16} color="#0284c7" />
-                      Gelecek 1, 2 ve 3 Günlük Model Fiyat Projeksiyonları:
+                      Multi-Day Neural Price Projections (+1D, +2D, +3D Target):
                     </div>
                     
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 14 }}>
@@ -521,7 +521,7 @@ export default function App() {
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
                               <span style={{ fontSize: 13, fontWeight: 800, color: '#0f172a' }}>{fc.day}</span>
                               <span className={`change-badge ${isPos ? 'positive' : 'negative'}`}>
-                                {isPos ? '+' : ''}%{fc.change_pct}
+                                {isPos ? '+' : ''}{fc.change_pct}%
                               </span>
                             </div>
 
@@ -551,7 +551,7 @@ export default function App() {
                   <div style={{ marginTop: 24, marginBottom: 20 }}>
                     <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 10, color: '#475569', display: 'flex', alignItems: 'center', gap: 6 }}>
                       <Newspaper size={15} />
-                      {stockData.ticker} Canlı Şirket Haberleri:
+                      {stockData.ticker} Real-Time Company News & Sentiment Feed:
                     </div>
                     <div className="news-feed-grid">
                       {stockData.news.map((item, idx) => (
@@ -575,10 +575,10 @@ export default function App() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, flexWrap: 'wrap', gap: 10 }}>
                     <div>
                       <div style={{ fontSize: 14, fontWeight: 700, color: '#0f172a' }}>
-                        {stockData.ticker} Geçmiş Fiyat ve Gelecek 3 Gün Projeksiyon Eğrisi
+                        {stockData.ticker} Historical Price & 3-Day Forecast Curves
                       </div>
                       <div style={{ fontSize: 11.5, color: '#64748b' }}>
-                        Düz çizgi: Son 20 günün gerçekleşen fiyatı | Kesikli çizgiler: Modellerin gelecek 3 gün tahmini
+                        Solid line: Realized close price | Dashed lines: Neural model trajectories
                       </div>
                     </div>
 
@@ -586,10 +586,10 @@ export default function App() {
                       {/* Historical Timeframe Switcher */}
                       <div style={{ display: 'flex', gap: 4, background: '#f1f5f9', padding: 3, borderRadius: 6 }}>
                         {[
-                          { label: '15G', val: '15' },
-                          { label: '30G', val: '30' },
-                          { label: '3 Ay', val: '90' },
-                          { label: '1 Yıl (Tümü)', val: 'all' }
+                          { label: '15D', val: '15' },
+                          { label: '30D', val: '30' },
+                          { label: '3M', val: '90' },
+                          { label: '1Y (All)', val: 'all' }
                         ].map(t => (
                           <button
                             key={t.val}
@@ -651,10 +651,10 @@ export default function App() {
                             borderStyle: 'dashed',
                             borderColor: showBacktest ? '#d97706' : '#cbd5e1'
                           }}
-                          title="Modelin geçmiş günlerdeki tahmin eğrisini (backtest) grafikte gösterir/gizler"
+                          title="Toggles historical backtest model trajectory curves on past chart data"
                         >
                           <Activity size={12} color={showBacktest ? '#d97706' : '#64748b'} />
-                          Geçmiş Model Eğrisi {showBacktest ? '✓' : ''}
+                          Historical Backtest {showBacktest ? '✓' : ''}
                         </button>
                       </div>
                     </div>
@@ -689,10 +689,10 @@ export default function App() {
               <div>
                 <h2 className="panel-title" style={{ marginBottom: 4 }}>
                   <Award size={20} color="#0284c7" />
-                  BIST 100 En Optimal Portföy (Markowitz Max Sharpe)
+                  Optimal BIST Portfolio Allocation (Markowitz Max Sharpe)
                 </h2>
                 <p style={{ fontSize: 13, color: '#64748b' }}>
-                  Yapay zeka algoritması Borsa İstanbul piyasasını otomatik tarayarak en yüksek risk-ayarlı getiriyi sağlayan ideal sepeti belirler.
+                  Quantitative quadratic optimizer scans Borsa Istanbul to compute the maximum risk-adjusted Sharpe basket under institutional constraints.
                 </p>
               </div>
 
@@ -703,35 +703,35 @@ export default function App() {
                 style={{ padding: '8px 16px', fontSize: 13 }}
               >
                 <RefreshCw className={loadingPortfolio ? "animate-spin" : ""} size={14} />
-                Tekrar Tara & Optimize Et
+                Rescan & Optimize
               </button>
             </div>
 
             {loadingPortfolio ? (
               <div style={{ padding: 60, textAlign: 'center', color: '#64748b' }}>
                 <RefreshCw className="animate-spin" size={28} style={{ margin: '0 auto 14px auto', color: '#0284c7' }} />
-                <div style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>BIST 100 Evreni Taranıyor...</div>
-                Bütün lokomotif hisselerin kovaryans ve beklenen getiri matrisleri çözülüyor.
+                <div style={{ fontSize: 15, fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>Scanning BIST Universe...</div>
+                Solving empirical covariance matrices and expected return vectors via SLSQP optimizer.
               </div>
             ) : portfolioData && (
               <div>
                 {/* Metric Pills */}
                 <div className="target-numbers-row" style={{ marginBottom: 24 }}>
                   <div className="target-pill">
-                    <div className="target-pill-title">Yıllık Beklenen Getiri</div>
-                    <div className="target-pill-val" style={{ color: '#059669' }}>%{portfolioData.annualized_return_pct}</div>
+                    <div className="target-pill-title">Expected Annual Return</div>
+                    <div className="target-pill-val" style={{ color: '#059669' }}>{portfolioData.annualized_return_pct}%</div>
                   </div>
                   <div className="target-pill">
-                    <div className="target-pill-title">Portföy Yıllık Riski (Volatilite)</div>
-                    <div className="target-pill-val" style={{ color: '#dc2626' }}>%{portfolioData.annualized_volatility_pct}</div>
+                    <div className="target-pill-title">Annualized Volatility (Risk)</div>
+                    <div className="target-pill-val" style={{ color: '#dc2626' }}>{portfolioData.annualized_volatility_pct}%</div>
                   </div>
                   <div className="target-pill">
-                    <div className="target-pill-title">Sharpe Oranı (Risk/Getiri)</div>
+                    <div className="target-pill-title">Sharpe Ratio (Risk-Adjusted)</div>
                     <div className="target-pill-val" style={{ color: '#0284c7' }}>{portfolioData.sharpe_ratio}</div>
                   </div>
                   <div className="target-pill">
-                    <div className="target-pill-title">Seçilen Hisse Sayısı</div>
-                    <div className="target-pill-val" style={{ color: '#0f172a' }}>{portfolioData.allocations.length} Hisse</div>
+                    <div className="target-pill-title">Active Assets Selected</div>
+                    <div className="target-pill-val" style={{ color: '#0f172a' }}>{portfolioData.allocations.length} Equities</div>
                   </div>
                 </div>
 
@@ -749,7 +749,7 @@ export default function App() {
 
                   <div>
                     <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 14, color: '#0f172a' }}>
-                      Önerilen Sermaye Dağılımı (% Ağırlıklar)
+                      Recommended Capital Allocation (% Weights)
                     </h3>
                     <div className="allocation-list">
                       {portfolioData.allocations.map((a) => (
@@ -761,7 +761,7 @@ export default function App() {
                               <div style={{ color: '#64748b', fontSize: 11.5 }}>{a.name}</div>
                             </div>
                           </div>
-                          <span style={{ fontWeight: 800, color: '#0f172a', fontSize: 16 }}>%{a.weight}</span>
+                          <span style={{ fontWeight: 800, color: '#0f172a', fontSize: 16 }}>{a.weight}%</span>
                         </div>
                       ))}
                     </div>
@@ -769,7 +769,7 @@ export default function App() {
                     <div className="ai-rationale-box" style={{ marginTop: 18 }}>
                       <div style={{ fontWeight: 700, marginBottom: 6, color: '#0f172a', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
                         <ShieldCheck size={16} color="#059669" />
-                        CIO Portföy Dağılım Raporu:
+                        CIO Strategic Portfolio Allocation Memo:
                       </div>
                       <p style={{ fontSize: 13.5, color: '#334155' }}>{portfolioData.cio_memo}</p>
                     </div>
