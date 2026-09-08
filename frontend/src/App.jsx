@@ -14,7 +14,9 @@ import {
   ShieldCheck,
   Sparkles,
   Calendar,
-  Compass
+  Compass,
+  Cpu,
+  Lock
 } from 'lucide-react';
 import {
   Chart as ChartJS,
@@ -497,6 +499,21 @@ export default function App() {
                     </div>
 
                     <div className="ai-rationale-box">
+                      <div className="msft-slm-header">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <span className="msft-slm-badge">
+                            <Cpu size={12} />
+                            Microsoft Foundry Local · Phi-3.5-mini
+                          </span>
+                          <span className="msft-privacy-tag">
+                            <Lock size={11} />
+                            On-Device SLM (100% Private)
+                          </span>
+                        </div>
+                        <span style={{ fontSize: 11, color: '#64748b', fontWeight: 600 }}>
+                          Edge Neural Inference
+                        </span>
+                      </div>
                       <div style={{ fontWeight: 700, marginBottom: 4, color: '#0f172a', fontSize: 12 }}>
                         CIO STRATEGIC MEMO & INVESTMENT RATIONALE:
                       </div>
@@ -767,6 +784,21 @@ export default function App() {
                     </div>
 
                     <div className="ai-rationale-box" style={{ marginTop: 18 }}>
+                      <div className="msft-slm-header">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                          <span className="msft-slm-badge">
+                            <Cpu size={12} />
+                            Microsoft Foundry Local · Phi-3.5-mini
+                          </span>
+                          <span className="msft-privacy-tag">
+                            <Lock size={11} />
+                            Confidential Portfolio Memo
+                          </span>
+                        </div>
+                        <span style={{ fontSize: 11, color: '#64748b', fontWeight: 600 }}>
+                          Sub-100ms Inference
+                        </span>
+                      </div>
                       <div style={{ fontWeight: 700, marginBottom: 6, color: '#0f172a', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
                         <ShieldCheck size={16} color="#059669" />
                         CIO Strategic Portfolio Allocation Memo:

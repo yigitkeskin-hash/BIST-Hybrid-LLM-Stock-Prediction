@@ -595,7 +595,7 @@ body {
 
 .ai-rationale-box {
   background: #ffffff;
-  border-left: 3px solid #0f172a;
+  border-left: 3.5px solid #0078d4;
   padding: 16px 20px;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   font-size: 14px;
@@ -605,6 +605,42 @@ body {
   border-bottom: 1px solid var(--border-color);
   border-right: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
+}
+
+.msft-slm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.msft-slm-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f0f7ff;
+  border: 1px solid #bae0ff;
+  color: #005fb8;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.msft-privacy-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #107c41;
+  background: #f1fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 600;
 }
 
 /* News Feed Grid */
